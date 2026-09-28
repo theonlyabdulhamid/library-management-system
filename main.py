@@ -1,92 +1,81 @@
-#  blue print
-class Book:
-    def __init__(self,title,author,isbn):
-        self.title=title
-        self.author=author
-        self.isbn=isbn
-        self.available=True
-    def borrow():
-        ...
-    def return_book():
-        ...
+from library import library,Book,Member
 
-       
-class Member:
-    def __init__(self,name,member_id):
-        self.name=name
-        self.member_id=member_id
-        self.borrowed_books=[]
-    def borrowed_books():
-        ...
-class Library:
-    def __init__(self):
-        self.books=[]
-        self.members=[]
-    def add_book(self,book):
-        self.books.append(book)
-    def register_member(self,member):
-        self.members.append(member)
-    def search_by_title(self,title):
-        
-        for book in self.books:
-            if book.title == title:
-                return book
-        return "book not found"
-    def search_by_author(self,author):
-            
-        for book in self.books:
-            if book.author == author:
-                return book
-        return "book not found"
-    def search_by_isbn(self,isbn):
-            
-        for book in self.books:
-            if book.isbn == isbn:
-                return book
-        return "book not found"
-    def remove_book(self,book):
+def main():
+    menu = """
+========================================
+          LIBRARY MANAGEMENT SYSTEM
+========================================
+
+1. Add book
+2. Remove book
+3. Search for book
+4. Register member
+5. Borrow book
+6. Return book
+7. View available books
+8. View borrowed books
+9. Exit
+"""
+    search_menu="""
+========================================
+             SEARCH BOOK
+========================================
+
+1. Search by title
+2. Search by author
+3. Search by ISBN
+4. Back to main menu"""  
+
+    while True:
+        print(menu)
         try:
-            x= self.books.index(book)
-            self.books.pop(x)
-            return "Book removed!"
+            option = int(input("Choose an option: "))
+            if option==1:
+                book=create_book()
+                library.add_book(book)
+                print("Book added successfully")
+            elif option==2:
+                library.remove_book()
+            elif option==3:  
+                while True:
+                    print(search_menu)
+                    try: 
+                        search_option= int(input("Choose option"))
+                        if search_option==1:
+                            library.search_by_title
+                            break
+                        elif search_option==2:
+                            library.search_by_author
+                            break
+                        elif search_option==3:
+                            library.search_by_isbn
+                            break
+                        elif search_option==4:
+                            break
+                        else:
+                            print("Please enter a valid option")
+                    except ValueError:
+                        print("Please enter a valid option")
+            elif option==4:
+                library.register_member()
+            elif option==5:
+                library.borrow_book()
+            elif option==6:
+                library.return_book()
+            elif option==7:
+                library.view_available_books()
+            elif option==8:
+                library.view_borrowed_books()
+            elif option==9:
+                print("Goodbye!")
+                break
         except ValueError:
-            return"Book not found"
-    def borrow_book(self,member,book):
-        if book not in self.books:
-            return "Book not found"
-        if member not in self.members:
-            return "Not a Registered member"
-        if not book.available:
-            return "Book is not available"
-        if book in self.books and member in self.members and book.available==True:
-            
-            book.available=False
-        
-        
-         
-    
+            print("Please enter a valid option")
+def create_book():
+    book_title=input("Book tittle: ").title()
+    book_author=input("Book author: ").title()
+    book_isbn=input("Book isbn: ")
+    book=book_title,book_author,book_isbn
+    return book
 
-        
-    
-library=Library()
-book1= Book("Atomic Habits","James Clear","9780735211292") #object1 
-book2=Book("Clean Code","Robert C. Martin","9780132350884") #object2
-book3=Book("The Alchemist","Paulo Coelho","9780061122415") #object3
-book4 = Book("Python Crash Course", "Eric Matthes", "9781593279288")
-books= [book1,book2,book3,book4]
-
-for book in books:
-    library.add_book(book)
-
-member1=Member("Abdulhamid","M001")
-member2=Member("Larry","M002")
-member3=Member("Abdulbasit","M003")
-member1.borrowed_books.append(book1)
-member4 = Member("Aisha", "M004")
-members=[member1,member2,member3,member4]
-
-
-for i in members:
-    library.register_member(i)
-library.remove_book(book4)
-print(len(library.books))
+main()
