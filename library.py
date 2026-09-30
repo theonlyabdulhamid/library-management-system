@@ -1,3 +1,4 @@
+import json
 class Book:
     def __init__(self, title, author, isbn):
         self.title = title
@@ -76,17 +77,49 @@ class Library:
         x = member.borrowed_books.index(book)
         member.borrowed_books.pop(x)
         return "Book returned successfully"
+
     def view_available_books(self):
-        available_books=[]
+        available_books = []
         for book in self.books:
             if book.available:
                 available_books.append(book)
         return available_books
+
     def view_borrowed_books(self):
-        borrowed=[]
-        for member in library.members:
-                borrowed.extend(member.borrowed_books)
+        borrowed = []
+        for member in self.members:
+            borrowed.extend(member.borrowed_books)
         return borrowed
+
+    def search_member_by_id(self, id):
+        for member in self.members:
+            if self.member_id == id:
+                return member
+            return "member not found"
+    def save_books(self):
+        books_data=[]
+        for book in self.books:
+            book_data = {
+    "title": book.title,
+    "author": book.author,
+    "isbn": book.isbn,
+    "available": book.available
+}
+            books_data.append(book_data)
+        with open("books.json","w")as file:
+            json.dump("books.json","w",inden) 
+
+
+
+
+        ...
+    def save_members(self):
+        ...
+    def load_books(self):
+        ...
+    def load_members(self):
+        ...
+
 
 library = Library()
 # book1 = Book("Atomic Habits", "James Clear", "9780735211292")  # object1
