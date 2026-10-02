@@ -93,7 +93,7 @@ class Library:
 
     def search_member_by_id(self, id):
         for member in self.members:
-            if self.member_id == id:
+            if member.member_id == id:
                 return member
             return "member not found"
     def save_books(self):
@@ -106,49 +106,33 @@ class Library:
     "available": book.available
 }
             books_data.append(book_data)
-        with open("books.json","w")as file:
-            json.dump("books.json","w",inden) 
-
-
-
-
-        ...
+        with open("books.json","a")as file:
+            json.dump(books_data,file,indent=4) 
     def save_members(self):
-        ...
+        members_data=[]
+
+        for member in self.members:    
+            borrowed_isbn=[]
+            for l in member.borrowed_books:
+                borrowed_isbn.append(l.isbn)
+                
+
+            member_data={
+                "member name":member.name,
+                "member id":member.member_id, 
+                "borrowed bookd isbn":borrowed_isbn
+            }
+            members_data.append(member_data)
+        with open("members.json","a") as file:
+            json.dump(members_data,file,indent=3)
+
     def load_books(self):
-        ...
+        with open("books.json")as file:
+            boos
+            for book in file:
+                self.books=self.book[""]
     def load_members(self):
         ...
 
 
 library = Library()
-# book1 = Book("Atomic Habits", "James Clear", "9780735211292")  # object1
-# book2 = Book("Clean Code", "Robert C. Martin", "9780132350884")  # object2
-# book3 = Book("The Alchemist", "Paulo Coelho", "9780061122415")  # object3
-# book4 = Book("Python Crash Course", "Eric Matthes", "9781593279288")
-# books = [book1, book2, book3, book4]
-
-# for book in books:
-#     library.add_book(book)
-
-# member1 = Member("Abdulhamid", "M001")
-# member2 = Member("Larry", "M002")
-# member3 = Member("Abdulbasit", "M003")
-# member1.borrowed_books.append(book1)
-# member4 = Member("Aisha", "M004")
-# members = [member1, member2, member3, member4]
-
-
-# for i in members:
-#     library.register_member(i)
-# library.remove_book(book4)
-
-# # print(library.borrow_book(member1, book1))
-# # print(book1.available)
-# # print(member1.borrowed_books[0].title)
-# # print(library.return_book(member1, book1))
-# # print(book1.available)
-# borrowed = library.view_borrowed_books()
-
-# for book in borrowed:
-#     print(book.title)
