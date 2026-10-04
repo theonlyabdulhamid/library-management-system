@@ -1,13 +1,12 @@
 import json
+
+
 class Book:
     def __init__(self, title, author, isbn):
         self.title = title
         self.author = author
         self.isbn = isbn
         self.available = True
-
-    def borrow(self): ...
-    def return_book(self): ...
 
 
 class Member:
@@ -16,7 +15,7 @@ class Member:
         self.member_id = member_id
         self.borrowed_books = []
 
-    def borrowed_books(): ...
+
 class Library:
     def __init__(self):
         self.books = []
@@ -95,44 +94,64 @@ class Library:
         for member in self.members:
             if member.member_id == id:
                 return member
-            return "member not found"
+        return "member not found"
+
     def save_books(self):
-        books_data=[]
+        books_data = []
         for book in self.books:
             book_data = {
-    "title": book.title,
-    "author": book.author,
-    "isbn": book.isbn,
-    "available": book.available
-}
+                "title": book.title,
+                "author": book.author,
+                "isbn": book.isbn,
+                "available": book.available,
+            }
             books_data.append(book_data)
-        with open("books.json","a")as file:
-            json.dump(books_data,file,indent=4) 
-    def save_members(self):
-        members_data=[]
+        with open("books.json", "w") as file:
+            json.dump(books_data, file, indent=4)
 
-        for member in self.members:    
-            borrowed_isbn=[]
+    def save_members(self):
+        members_data = []
+
+        for member in self.members:
+            borrowed_isbn = []
             for l in member.borrowed_books:
                 borrowed_isbn.append(l.isbn)
-                
 
-            member_data={
-                "member name":member.name,
-                "member id":member.member_id, 
-                "borrowed bookd isbn":borrowed_isbn
+            member_data = {
+                "member name": member.name,
+                "member id": member.member_id,
+                "borrowed bookd isbn": borrowed_isbn,
             }
             members_data.append(member_data)
-        with open("members.json","a") as file:
-            json.dump(members_data,file,indent=3)
+        with open("members.json", "w") as file:
+            json.dump(members_data, file, indent=3)
 
     def load_books(self):
-        with open("books.json")as file:
-            boos
-            for book in file:
-                self.books=self.book[""]
+        self.books = []
+        with open("books.json") as file:
+            books_data = json.load(file)
+        for book in books_data:
+            book_title = book["title"]
+            book_author = book["author"]
+            book_isbn = book["isbn"]
+            book_availability = book["available"]
+            book = Book(book_title, book_author, book_isbn)
+            book.available = book_availability
+            self.books.append(book)
+
     def load_members(self):
-        ...
+        self.members = []
+        with open("members.json") as file:
+            members_data = json.load(file)
+        for libmember in members_data:
+            member_name = libmember["member name"]
+            member_id = libmember["member id"]
+            member = Member(member_name, member_id)
+            self.members.append(member)
+            borrowed_isbn=libmember["borrowed bookd isbn"]
+            member.borrowed_books=[]
+            for borrowed in borrowed_isbn:
+                member.borrowed_books.append(self.search_by_isbn(borrowed))
 
 
 library = Library()

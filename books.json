@@ -4,5 +4,17 @@
         "author": "James Clear",
         "isbn": "9780735211292",
         "available": true
+    },
+    {
+        "title": "Clean Code",
+        "author": "Robert C. Martin",
+        "isbn": "9780132350884",
+        "available": true
+    },
+    {
+        "title": "The Alchemist",
+        "author": "Paulo Coelho",
+        "isbn": "9780061122415",
+        "available": true
     }
 ]

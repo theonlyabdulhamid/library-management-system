@@ -2,6 +2,8 @@ from library import library, Book, Member
 
 
 def main():
+    library.load_books()
+    library.load_members()
     menu = """
 ========================================
           LIBRARY MANAGEMENT SYSTEM
@@ -34,7 +36,6 @@ def main():
             if option == 1:
                 book = create_book()
                 library.add_book(book)
-                library.save_books()
                 print("Book added successfully")
             elif option == 2:
                 x = input("Enter book isbn number: ").strip()
@@ -53,7 +54,10 @@ def main():
                         if search_option == 1:
                             title = input("Enter book tittle: ").strip().title()
                             title_result = library.search_by_title(title)
-                            print(title_result)
+                            if title_result== "book not found":
+                                print(title_result)
+                            else:
+                                print(" book foound")
                             break
 
                         elif search_option == 2:
@@ -78,7 +82,6 @@ def main():
             elif option == 4:
                 member = create_member()
                 library.register_member(member)
-                library.save_members()
                 print("Member added successfully!")
 
             elif option == 5:
@@ -88,7 +91,6 @@ def main():
                     print("Member not found")
                 else:
                     x = library.borrow_book(memb, book=library.search_by_isbn(res))
-                    library.save_members()
                     print(x)
 
             elif option == 6:
@@ -119,6 +121,8 @@ def main():
                     print()
 
             elif option == 9:
+                library.save_books()
+                library.save_members()
                 print("Goodbye!")
                 break
 
@@ -139,5 +143,6 @@ def create_member():
     member_id = input("Member id: ")
     member = Member(member_name, member_id)
     return member
+
 
 main()

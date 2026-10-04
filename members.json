@@ -1,27 +1,17 @@
 [
    {
-      "member name": "abdulhamid",
-      "member id": "M001",
-      "borrowed bookd isbn": []
-   }
-][
-   {
-      "member name": "abdulhamid",
-      "member id": "M001",
-      "borrowed bookd isbn": []
-   }
-][
-   {
       "member name": "Abdulhamid Umar",
       "member id": "M001",
       "borrowed bookd isbn": []
-   }
-][
+   },
    {
-      "member name": "Abdulhamid Umar",
+      "member name": "Abdulqudus Ismail",
+      "member id": "M002",
+      "borrowed bookd isbn": []
+   },
+   {
+      "member name": "Atomic Habits",
       "member id": "M001",
-      "borrowed bookd isbn": [
-         "9780735211292"
-      ]
+      "borrowed bookd isbn": []
    }
 ]
