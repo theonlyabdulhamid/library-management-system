@@ -34,17 +34,20 @@ def main():
         try:
             option = int(input("Choose an option: "))
             if option == 1:
-                book = create_book()
-                library.add_book(book)
-                print("Book added successfully")
+                book, success = create_book()
+                if success:
+                    library.add_book(book)
+                    print("Book added successfully")
+                else:
+                    print(book)
             elif option == 2:
-                x = input("Enter book isbn number: ").strip()
-                rbook = library.search_by_isbn(x)
-                if rbook == "book not found":
+                isbn_number = input("Enter book isbn number: ").strip()
+                book = library.search_by_isbn(isbn_number)
+                if book is None:
                     print("book not found")
                 else:
-                    y = library.remove_book(rbook)
-                    print(y)
+                    result = library.remove_book(book)
+                    print(result)
 
             elif option == 3:
                 while True:
@@ -54,22 +57,28 @@ def main():
                         if search_option == 1:
                             title = input("Enter book tittle: ").strip().title()
                             title_result = library.search_by_title(title)
-                            if title_result== "book not found":
-                                print(title_result)
+                            if title_result is None:
+                                print("book not found")
                             else:
-                                print(" book foound")
+                                print(title_result)
                             break
 
                         elif search_option == 2:
                             author = input("Enter book author: ").strip().title()
                             author_result = library.search_by_author(author)
-                            print(author_result)
+                            if author_result is None:
+                                print("Book not found")
+                            else:
+                                print(author_result)
                             break
 
                         elif search_option == 3:
                             isbn = input("Enter book isbn number: ").strip().title()
                             isbn_result = library.search_by_isbn(isbn)
-                            print(isbn_result)
+                            if isbn_result is None:
+                                print("Book not found")
+                            else:
+                                print(isbn_result)
                             break
 
                         elif search_option == 4:
@@ -80,44 +89,53 @@ def main():
                     except ValueError:
                         print("Please enter a valid option")
             elif option == 4:
-                member = create_member()
-                library.register_member(member)
-                print("Member added successfully!")
+                member, success = create_member()
+                if success:
+                    library.register_member(member)
+                    print("Member added successfully!")
+                else:
+                    print(member)
 
             elif option == 5:
-                res = input("Enter book isbn number: ").strip()
-                memb = library.search_member_by_id(input("Enter member id: ").strip())
-                if memb == "member not found":
+                isbn = input("Enter book isbn number: ").strip()
+                member = library.search_member_by_id(input("Enter member id: ").strip())
+                if member is None:
                     print("Member not found")
                 else:
-                    x = library.borrow_book(memb, book=library.search_by_isbn(res))
-                    print(x)
+                    book=library.search_by_isbn(isbn)
+                    if book is None:
+                        result = library.borrow_book(
+                            member, book
+                        )
+                        print(result)
 
             elif option == 6:
-                res = input("Enter book isbn number: ").strip()
-                memb = library.search_member_by_id(input("Enter member id: ").strip())
-                if memb == "member not found":
+                isbn = input("Enter book isbn number: ").strip()
+                book = library.search_by_isbn(isbn)
+
+                member = library.search_member_by_id(input("Enter member id: ").strip())
+                if member is None:
                     print("Member not found")
                 else:
-                    x = library.return_book(memb, book=library.search_by_isbn(res))
-                    print(x)
+                    if book is None:
+                        print("book not found")
+                    else:
+                        return_book = library.return_book(member, book)
+                        print(return_book)
 
             elif option == 7:
                 available = library.view_available_books()
-                for index, items in enumerate(available, start=1):
+                for index, book in enumerate(available, start=1):
+
                     print(f"Book {index}:")
-                    print(f"Title: {items.title}")
-                    print(f"Author: {items.author}")
-                    print(f"ISBN: {items.isbn}")
+                    print(book)
                     print()
 
             elif option == 8:
                 borrowed = library.view_borrowed_books()
-                for index, items in enumerate(borrowed, start=1):
+                for index, book in enumerate(borrowed, start=1):
                     print(f"Book {index}:")
-                    print(f"Title: {items.title}")
-                    print(f"Author: {items.author}")
-                    print(f"ISBN: {items.isbn}")
+                    print(book)
                     print()
 
             elif option == 9:
@@ -131,18 +149,32 @@ def main():
 
 
 def create_book():
-    book_title = input("Book tittle: ").title()
-    book_author = input("Book author: ").title()
-    book_isbn = input("Book isbn: ")
-    book = Book(book_title, book_author, book_isbn)
-    return book
+    book_title = input_validation("Book tittle").title()
+    book_author = input_validation("Book author").title()
+    book_isbn = input_validation("Book isbn")
+    if not library.search_by_isbn(book_isbn):
+        return Book(book_title, book_author, book_isbn), True
+    else:
+        return "Book ISBN already exists", False
 
 
 def create_member():
-    member_name = input("Member name: ").title()
-    member_id = input("Member id: ")
-    member = Member(member_name, member_id)
-    return member
+    member_name = input_validation("Member name").title()
+    member_id = input_validation("Member id")
+    if library.search_member_by_id(member_id) is None:
+        member = Member(member_name, member_id), True
+        return member
+    else:
+        return "Member id already exists", False
+
+
+def input_validation(prompt):
+    while True:
+        valid = input(f"{prompt}: ").strip()
+        if valid:
+            return valid
+        else:
+            print("Empty input not allowed")
 
 
 main()

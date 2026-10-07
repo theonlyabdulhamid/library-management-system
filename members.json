@@ -1,17 +1,17 @@
 [
    {
-      "member name": "Abdulhamid Umar",
-      "member id": "M001",
-      "borrowed bookd isbn": []
+      "member_name": "Abdulhamid Umar",
+      "member_id": "M001",
+      "borrowed_books_isbn": []
    },
    {
-      "member name": "Abdulqudus Ismail",
-      "member id": "M002",
-      "borrowed bookd isbn": []
+      "member_name": "Abdulqudus Ismail",
+      "member_id": "M002",
+      "borrowed_books_isbn": []
    },
    {
-      "member name": "Atomic Habits",
-      "member id": "M001",
-      "borrowed bookd isbn": []
+      "member_name": "Aisha",
+      "member_id": "M004",
+      "borrowed_books_isbn": []
    }
 ]

@@ -8,6 +8,9 @@ class Book:
         self.isbn = isbn
         self.available = True
 
+    def __str__(self):
+        return f"{self.title} by {self.author} | ISBN: {self.isbn}"
+
 
 class Member:
     def __init__(self, name, member_id):
@@ -32,27 +35,30 @@ class Library:
         for book in self.books:
             if book.title == title:
                 return book
-        return "book not found"
+        return None
 
     def search_by_author(self, author):
 
         for book in self.books:
             if book.author == author:
                 return book
-        return "book not found"
+        return None
 
     def search_by_isbn(self, isbn):
 
         for book in self.books:
             if book.isbn == isbn:
                 return book
-        return "book not found"
+        return None
 
     def remove_book(self, book):
         try:
             x = self.books.index(book)
-            self.books.pop(x)
-            return "Book removed!"
+            if book.available:
+                self.books.pop(x)
+                return "Book removed!"
+            else:
+                return "Book is currently borrowed"
         except ValueError:
             return "Book not found"
 
@@ -90,11 +96,11 @@ class Library:
             borrowed.extend(member.borrowed_books)
         return borrowed
 
-    def search_member_by_id(self, id):
+    def search_member_by_id(self, member_id):
         for member in self.members:
-            if member.member_id == id:
+            if member.member_id == member_id:
                 return member
-        return "member not found"
+        return None
 
     def save_books(self):
         books_data = []
@@ -114,13 +120,13 @@ class Library:
 
         for member in self.members:
             borrowed_isbn = []
-            for l in member.borrowed_books:
-                borrowed_isbn.append(l.isbn)
+            for book in member.borrowed_books:
+                borrowed_isbn.append(book.isbn)
 
             member_data = {
-                "member name": member.name,
-                "member id": member.member_id,
-                "borrowed bookd isbn": borrowed_isbn,
+                "member_name": member.name,
+                "member_id": member.member_id,
+                "borrowed_books_isbn": borrowed_isbn,
             }
             members_data.append(member_data)
         with open("members.json", "w") as file:
@@ -144,12 +150,15 @@ class Library:
         with open("members.json") as file:
             members_data = json.load(file)
         for libmember in members_data:
-            member_name = libmember["member name"]
-            member_id = libmember["member id"]
+            member_name = libmember["member_name"]
+            member_id = libmember["member_id"]
+
             member = Member(member_name, member_id)
             self.members.append(member)
-            borrowed_isbn=libmember["borrowed bookd isbn"]
-            member.borrowed_books=[]
+
+            borrowed_isbn = libmember["borrowed_books_isbn"]
+            member.borrowed_books = []
+            
             for borrowed in borrowed_isbn:
                 member.borrowed_books.append(self.search_by_isbn(borrowed))
 
